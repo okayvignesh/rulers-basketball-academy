@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Bebas_Neue, Oswald } from "next/font/google";
 import "./globals.css";
 
@@ -21,29 +21,95 @@ const oswald = Oswald({
   display: "swap",
 });
 
+const SITE_URL = "https://rulersbasketballacademy.com";
+const SITE_NAME = "Rulers Basketball Academy";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#f97316",
+};
+
 export const metadata: Metadata = {
-  title: "Rulers Basketball Academy | Train Like a Champion",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Rulers Basketball Academy | Professional Basketball Training in Hyderabad",
+    template: "%s | Rulers Basketball Academy",
+  },
   description:
-    "Professional basketball training academy in Miyapur, Hyderabad. Expert coaching for all ages and skill levels. MSME registered (UDYAM-TS-09-0205178). Join us and train like a champion!",
+    "Rulers Basketball Academy offers professional basketball training in Miyapur, Hyderabad for all ages. Expert coaching, structured programs for beginners to advanced players. MSME registered. Join now!",
   keywords: [
-    "basketball academy",
-    "basketball training",
-    "Hyderabad",
-    "Miyapur",
-    "sports academy",
-    "basketball coaching",
-    "youth basketball",
+    "basketball academy Hyderabad",
+    "basketball training Miyapur",
+    "basketball coaching Hyderabad",
+    "youth basketball training",
+    "kids basketball academy",
+    "sports academy Hyderabad",
+    "basketball classes near me",
     "Rulers Basketball Academy",
-    "Telangana sports",
+    "basketball camp Hyderabad",
+    "professional basketball training",
+    "basketball academy Telangana",
+    "Serilingampally sports",
+    "Miyapur sports academy",
+    "weekend basketball camp",
+    "basketball for kids Hyderabad",
   ],
-  authors: [{ name: "Rulers Basketball Academy" }],
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  formatDetection: {
+    telephone: true,
+    email: true,
+    address: true,
+  },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/icon.svg",
+  },
   openGraph: {
     title: "Rulers Basketball Academy | Train Like a Champion",
     description:
-      "Professional basketball training for all ages in Hyderabad. Build your skills with expert coaching.",
+      "Professional basketball training for all ages in Miyapur, Hyderabad. Expert coaches, structured programs, tournament exposure. Enroll today!",
+    url: SITE_URL,
+    siteName: SITE_NAME,
     type: "website",
     locale: "en_IN",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1200&h=630&fit=crop",
+        width: 1200,
+        height: 630,
+        alt: "Rulers Basketball Academy - Professional Basketball Training",
+      },
+    ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rulers Basketball Academy | Train Like a Champion",
+    description:
+      "Professional basketball training for all ages in Hyderabad. Expert coaching, structured programs. Join now!",
+    images: [
+      "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1200&h=630&fit=crop",
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: SITE_URL,
+  },
+  category: "sports",
 };
 
 export default function RootLayout({
@@ -52,7 +118,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" dir="ltr">
       <head>
         <link
           rel="stylesheet"

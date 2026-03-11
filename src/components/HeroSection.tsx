@@ -80,6 +80,8 @@ export default function HeroSection() {
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      role="banner"
+      aria-label="Rulers Basketball Academy - Hero Banner"
     >
       {/* Background */}
       <div
