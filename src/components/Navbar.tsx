@@ -89,7 +89,7 @@ export default function Navbar() {
 
         {/* CTA Button */}
         <Link
-          href="#register-form"
+          href="/register"
           className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-[family-name:var(--font-oswald)] text-[0.85rem] font-medium tracking-[1px] uppercase rounded-lg border-2 border-primary transition-all duration-300 hover:bg-primary-dark hover:border-primary-dark hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(249,115,22,0.35)]"
         >
           Register Now
@@ -140,7 +140,7 @@ export default function Navbar() {
           </Link>
         ))}
         <Link
-          href="#register-form"
+          href="/register"
           onClick={closeMobile}
           className="mt-4 w-full text-center px-5 py-3 bg-primary text-white font-[family-name:var(--font-oswald)] text-[0.9rem] font-medium tracking-[1px] uppercase rounded-lg transition-all duration-300 hover:bg-primary-dark"
         >

@@ -46,6 +46,16 @@ const galleryImages = [
     alt: "Basketball close-up",
     caption: "The Game We Love",
   },
+  {
+    src: "/images/WhatsApp Image 2026-03-11 at 15.04.37.jpeg",
+    alt: "Rulers Basketball Academy",
+    caption: "Academy Moments",
+  },
+  {
+    src: "/images/WhatsApp Image 2026-03-11 at 15.04.38.jpeg",
+    alt: "Rulers Basketball Academy",
+    caption: "Academy Life",
+  },
 ];
 
 export default function GallerySection() {
