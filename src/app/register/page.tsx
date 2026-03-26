@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.clubadmin.domainrental.in/api";
-const REGISTRATION_SLUG = process.env.NEXT_PUBLIC_REGISTRATION_SLUG || "";
+const REGISTRATION_SLUG = process.env.NEXT_PUBLIC_REGISTRATION_SLUG || "rulers-basketball-academy";
 
 interface FormData {
   // Required
