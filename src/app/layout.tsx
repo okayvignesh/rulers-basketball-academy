@@ -37,10 +37,9 @@ export const metadata: Metadata = {
     template: "%s | Rulers Basketball Academy",
   },
   description:
-    "Rulers Basketball Academy offers professional basketball training in Miyapur, Hyderabad for all ages. Expert coaching, structured programs for beginners to advanced players. MSME registered. Join now!",
+    "Rulers Basketball Academy offers professional basketball training in Hyderabad for all ages. Expert coaching, structured programs for beginners to advanced players. Join now!",
   keywords: [
     "basketball academy Hyderabad",
-    "basketball training Miyapur",
     "basketball coaching Hyderabad",
     "youth basketball training",
     "kids basketball academy",
@@ -50,8 +49,6 @@ export const metadata: Metadata = {
     "basketball camp Hyderabad",
     "professional basketball training",
     "basketball academy Telangana",
-    "Serilingampally sports",
-    "Miyapur sports academy",
     "weekend basketball camp",
     "basketball for kids Hyderabad",
   ],
@@ -65,14 +62,15 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/images/Asset 1.svg", type: "image/svg+xml" },
+      { url: "/images/Asset 1.png", type: "image/png" },
     ],
-    apple: "/icon.svg",
+    apple: "/images/Asset 1.png",
   },
   openGraph: {
     title: "Rulers Basketball Academy | Train Like a Champion",
     description:
-      "Professional basketball training for all ages in Miyapur, Hyderabad. Expert coaches, structured programs, tournament exposure. Enroll today!",
+      "Professional basketball training for all ages in Hyderabad. Expert coaches, structured programs. Enroll today!",
     url: SITE_URL,
     siteName: SITE_NAME,
     type: "website",

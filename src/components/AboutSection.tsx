@@ -39,7 +39,7 @@ const features = [
   {
     icon: "fas fa-star",
     title: "Why Choose Us",
-    desc: "Expert coaches, modern facilities, structured programs, and a proven training system that delivers results.",
+    desc: "Expert coaches, structured programs, and a proven training system that delivers results.",
   },
 ];
 
@@ -88,12 +88,10 @@ export default function AboutSection() {
               Welcome to Rulers Basketball Academy
             </h3>
             <p className="text-gray-500 mb-4 text-[0.95rem]">
-              Founded in December 2025, Rulers Basketball Academy is a
-              MSME-registered sports organization (UDYAM-TS-09-0205178)
-              dedicated to nurturing basketball talent in Hyderabad. Located in
-              the heart of Miyapur, Serilingampally, we provide world-class
-              training facilities and expert coaching for aspiring basketball
-              players of all ages and skill levels.
+              Founded in December 2025, Rulers Basketball Academy is
+              dedicated to nurturing basketball talent. We give training in
+              well established communities, providing expert coaching for
+              aspiring basketball players of all ages and skill levels.
             </p>
             <p className="text-gray-500 mb-8 text-[0.95rem]">
               Our academy is committed to developing well-rounded athletes who

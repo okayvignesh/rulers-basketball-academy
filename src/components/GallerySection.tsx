@@ -5,12 +5,6 @@ import ScrollReveal from "./ui/ScrollReveal";
 
 const galleryImages = [
   {
-    src: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&h=600&fit=crop",
-    alt: "Basketball training drills",
-    caption: "Training Session",
-    large: true,
-  },
-  {
     src: "https://images.unsplash.com/photo-1515523110800-9415d13b84a8?w=600&h=400&fit=crop",
     alt: "Basketball game action",
     caption: "Game Day",
@@ -26,15 +20,15 @@ const galleryImages = [
     caption: "Team Spirit",
   },
   {
-    src: "https://images.unsplash.com/photo-1504450758481-7338bbe75c8e?w=600&h=400&fit=crop",
-    alt: "Dribbling drills",
-    caption: "Dribbling Drills",
+    src: "/images/WhatsApp Image 2026-03-24 at 08.17.49.jpeg",
+    alt: "Basketball slam dunk silhouette",
+    caption: "Slam Dunk",
   },
   {
-    src: "https://images.unsplash.com/photo-1559692048-79a3f837883d?w=800&h=600&fit=crop",
-    alt: "Basketball court",
-    caption: "Our Court",
-    large: true,
+    src: "/images/WhatsApp Image 2026-03-24 at 08.17.50.jpeg",
+    alt: "Basketball team unity",
+    caption: "Team Unity",
+    tall: true,
   },
   {
     src: "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=600&h=400&fit=crop",
@@ -55,6 +49,18 @@ const galleryImages = [
     src: "/images/WhatsApp Image 2026-03-11 at 15.04.38.jpeg",
     alt: "Rulers Basketball Academy",
     caption: "Academy Life",
+  },
+  {
+    src: "/images/Gemini_Generated_Image_e81br6e81br6e81b.png",
+    alt: "Rulers Basketball Academy group photo",
+    caption: "Our Academy Family",
+    large: true,
+  },
+  {
+    src: "/images/Gemini_Generated_Image_qdlmcgqdlmcgqdlm.png",
+    alt: "Rulers Basketball Academy team on court",
+    caption: "Court Sessions",
+    large: true,
   },
 ];
 
@@ -115,7 +121,7 @@ export default function GallerySection() {
             <ScrollReveal
               key={i}
               delay={i * 80}
-              className={img.large ? "sm:col-span-2" : ""}
+              className={`${img.large ? "sm:col-span-2" : ""} ${img.tall ? "sm:row-span-2" : ""}`}
             >
               <div
                 className="relative rounded-xl overflow-hidden cursor-pointer group h-full"

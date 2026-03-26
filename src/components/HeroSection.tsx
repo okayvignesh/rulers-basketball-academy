@@ -118,7 +118,7 @@ export default function HeroSection() {
         {/* Badge */}
         <div className="animate-fade-in-down inline-flex items-center gap-2 px-6 py-2 bg-primary/15 border border-primary/30 rounded-full text-primary-light font-[family-name:var(--font-oswald)] text-[0.85rem] tracking-[2px] uppercase mb-6">
           <i className="fas fa-trophy" />
-          MSME Registered Academy
+          Professional Basketball Academy
         </div>
 
         {/* Title */}
@@ -141,9 +141,8 @@ export default function HeroSection() {
 
         {/* Description */}
         <p className="text-[1.05rem] text-white/55 max-w-[560px] mx-auto mb-9 animate-fade-in-up delay-900">
-          Professional basketball training for all ages and skill levels in
-          Hyderabad. Build your skills, strength, and game IQ with expert
-          coaching.
+          Professional basketball training for all ages and skill levels.
+          Build your skills, strength, and game IQ with expert coaching.
         </p>
 
         {/* CTA Buttons */}
@@ -164,10 +163,9 @@ export default function HeroSection() {
 
         {/* Stats */}
         <div className="flex justify-center gap-12 flex-wrap animate-fade-in-up delay-1300">
-          <StatCounter target={200} label="Active Players" />
-          <StatCounter target={5} label="Expert Coaches" />
-          <StatCounter target={10} label="Tournaments" />
-          <StatCounter target={4} label="Training Batches" showPlus={false} />
+          <StatCounter target={80} label="Active Players" />
+          <StatCounter target={3} label="Expert Coaches" />
+          <StatCounter target={5} label="Training Batches" showPlus={false} />
         </div>
       </div>
 

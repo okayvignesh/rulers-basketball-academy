@@ -4,6 +4,9 @@ import { useState, FormEvent, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.clubadmin.domainrental.in/api";
+const REGISTRATION_SLUG = process.env.NEXT_PUBLIC_REGISTRATION_SLUG || "";
+
 interface FormData {
   // Required
   parentName: string;
@@ -63,8 +66,6 @@ function validate(data: FormData): FormErrors {
   else if (data.childName.trim().length < 2)
     errors.childName = "Name must be at least 2 characters";
 
-  if (!data.childPhoto) errors.childPhoto = "Child's photo is required";
-
   // Optional field validations
   if (data.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
     errors.email = "Enter a valid email address";
@@ -78,11 +79,71 @@ function validate(data: FormData): FormErrors {
   return errors;
 }
 
+function PaymentSection() {
+  const [showQR, setShowQR] = useState(false);
+
+  return (
+    <div className="mb-10">
+      <h2 className="font-[family-name:var(--font-oswald)] text-[1.3rem] text-secondary mb-1 flex items-center gap-2">
+        <i className="fas fa-qrcode text-primary" />
+        Payment
+      </h2>
+      <p className="text-gray-400 text-sm mb-6">
+        Click the button below to view payment details
+      </p>
+
+      {!showQR ? (
+        <button
+          type="button"
+          onClick={() => setShowQR(true)}
+          className="w-full flex items-center justify-center gap-3 px-7 py-4 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer transition-all duration-300 hover:border-primary hover:bg-primary/5 group"
+        >
+          <div className="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-lg text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
+            <i className="fas fa-eye" />
+          </div>
+          <span className="font-[family-name:var(--font-oswald)] text-[1rem] text-gray-600 tracking-[0.5px] group-hover:text-primary transition-colors">
+            Show Payment Details
+          </span>
+        </button>
+      ) : (
+        <div className="flex flex-col items-center gap-4 p-8 bg-gray-50 rounded-xl border border-gray-200 animate-fade-in">
+          <div className="bg-white p-4 rounded-xl shadow-md">
+            <Image
+              src="/images/payment-qr.svg"
+              alt="Payment QR Code"
+              width={200}
+              height={200}
+              className="w-[200px] h-[200px]"
+            />
+          </div>
+          <div className="text-center">
+            <p className="font-[family-name:var(--font-oswald)] text-secondary text-[1rem] tracking-[0.5px]">
+              Scan to Pay
+            </p>
+            <p className="text-gray-400 text-sm mt-1">
+              UPI / Google Pay / PhonePe / Paytm
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowQR(false)}
+            className="text-sm text-gray-400 hover:text-gray-600 transition-colors mt-1"
+          >
+            <i className="fas fa-eye-slash mr-1" /> Hide payment details
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function RegisterPage() {
   const [form, setForm] = useState<FormData>(initialForm);
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Set<string>>(new Set());
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -134,14 +195,56 @@ export default function RegisterPage() {
     setErrors((prev) => ({ ...prev, [name]: newErrors[name] || "" }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const newErrors = validate(form);
     setErrors(newErrors);
     setTouched(new Set(Object.keys(form)));
 
-    if (Object.keys(newErrors).length === 0) {
+    if (Object.keys(newErrors).length > 0) return;
+
+    setLoading(true);
+    setApiError("");
+
+    try {
+      const payload = {
+        name: form.parentName.trim(),
+        phone: form.phone.replace(/\D/g, ""),
+        email: form.email.trim() || undefined,
+        address: form.address.trim() || undefined,
+        isChildMember: true,
+        childName: form.childName.trim(),
+        childDOB: form.childDOB || undefined,
+        childGender: form.childGender || undefined,
+        childGrade: form.childGrade.trim() || undefined,
+        childBloodGroup: form.childBloodGroup || undefined,
+        fatherName: form.fatherName.trim() || undefined,
+        motherName: form.motherName.trim() || undefined,
+        fatherMobile: form.fatherMobile.replace(/\D/g, "") || undefined,
+        motherMobile: form.motherMobile.replace(/\D/g, "") || undefined,
+      };
+
+      const response = await fetch(
+        `${API_URL}/public/register/${REGISTRATION_SLUG}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ message: "Failed to submit registration" }));
+        throw new Error(error.message);
+      }
+
       setSubmitted(true);
+    } catch (err) {
+      setApiError(
+        err instanceof Error ? err.message : "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -324,7 +427,7 @@ export default function RegisterPage() {
               <div className="mb-1">
                 <label className="flex items-center gap-1.5 font-[family-name:var(--font-oswald)] text-[0.9rem] font-medium text-gray-600 mb-2 tracking-[0.5px]">
                   <i className="fas fa-camera text-primary text-[0.85rem]" />
-                  Child&apos;s Photo <span className="text-red-500">*</span>
+                  Child&apos;s Photo
                 </label>
                 <div
                   onClick={() => fileInputRef.current?.click()}
@@ -567,42 +670,31 @@ export default function RegisterPage() {
           <hr className="border-gray-200 mb-10" />
 
           {/* Section: Payment QR Code */}
-          <div className="mb-10">
-            <h2 className="font-[family-name:var(--font-oswald)] text-[1.3rem] text-secondary mb-1 flex items-center gap-2">
-              <i className="fas fa-qrcode text-primary" />
-              Payment
-            </h2>
-            <p className="text-gray-400 text-sm mb-6">
-              Scan the QR code below to make the registration payment
-            </p>
+          <PaymentSection />
 
-            <div className="flex flex-col items-center gap-4 p-8 bg-gray-50 rounded-xl border border-gray-200">
-              <div className="bg-white p-4 rounded-xl shadow-md">
-                <Image
-                  src="/images/payment-qr.svg"
-                  alt="Payment QR Code"
-                  width={200}
-                  height={200}
-                  className="w-[200px] h-[200px]"
-                />
-              </div>
-              <div className="text-center">
-                <p className="font-[family-name:var(--font-oswald)] text-secondary text-[1rem] tracking-[0.5px]">
-                  Scan to Pay
-                </p>
-                <p className="text-gray-400 text-sm mt-1">
-                  UPI / Google Pay / PhonePe / Paytm
-                </p>
-              </div>
+          {/* API Error */}
+          {apiError && (
+            <div className="mb-6 flex items-center gap-3 px-5 py-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-[0.9rem]">
+              <i className="fas fa-exclamation-circle text-[1.1rem]" />
+              {apiError}
             </div>
-          </div>
+          )}
 
           {/* Submit */}
           <button
             type="submit"
-            className="w-full mt-2 flex items-center justify-center gap-2 px-9 py-4 bg-primary text-white font-[family-name:var(--font-oswald)] text-[1.05rem] font-medium tracking-[1px] uppercase rounded-lg border-2 border-primary cursor-pointer transition-all duration-300 hover:bg-primary-dark hover:border-primary-dark hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(249,115,22,0.35)]"
+            disabled={loading}
+            className="w-full mt-2 flex items-center justify-center gap-2 px-9 py-4 bg-primary text-white font-[family-name:var(--font-oswald)] text-[1.05rem] font-medium tracking-[1px] uppercase rounded-lg border-2 border-primary cursor-pointer transition-all duration-300 hover:bg-primary-dark hover:border-primary-dark hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(249,115,22,0.35)] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
           >
-            <i className="fas fa-paper-plane" /> Submit Registration
+            {loading ? (
+              <>
+                <i className="fas fa-spinner fa-spin" /> Submitting...
+              </>
+            ) : (
+              <>
+                <i className="fas fa-paper-plane" /> Submit Registration
+              </>
+            )}
           </button>
         </form>
       </div>

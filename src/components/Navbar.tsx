@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -61,11 +62,17 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           href="#home"
-          className="flex items-center gap-2.5 font-[family-name:var(--font-bebas-neue)] text-[1.8rem] text-white tracking-[3px]"
+          className="flex items-center gap-2 font-[family-name:var(--font-bebas-neue)] text-[1.1rem] sm:text-[1.3rem] text-white tracking-[1.5px]"
         >
-          <i className="fas fa-basketball-ball text-primary text-[1.6rem]" />
+          <Image
+            src="/images/Asset 1.png"
+            alt="Rulers Basketball Academy Logo"
+            width={44}
+            height={44}
+            className="rounded-full"
+          />
           <span>
-            RULERS<span className="text-primary">BA</span>
+            RULERS <span className="text-primary">BASKETBALL</span> ACADEMY
           </span>
         </Link>
 
