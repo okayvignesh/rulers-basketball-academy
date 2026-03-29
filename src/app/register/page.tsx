@@ -580,6 +580,10 @@ export default function RegisterPage() {
                 <span className="block text-[0.8rem] text-red-500 mt-1 min-h-[20px]">
                   {errors.phone}
                 </span>
+                <p className="text-gray-400 text-xs mt-0.5">
+                  <i className="fab fa-whatsapp text-green-500 mr-1" />
+                  This number will be used for WhatsApp communications
+                </p>
               </div>
 
               {/* Email */}
