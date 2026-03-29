@@ -1,11 +1,20 @@
 "use client";
 
-import { useState, FormEvent, useRef } from "react";
+import { useState, useEffect, FormEvent, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.clubadmin.domainrental.in/api";
 const REGISTRATION_SLUG = process.env.NEXT_PUBLIC_REGISTRATION_SLUG || "rulers-basketball-academy";
+const UPLOAD_API_URL = "https://uploadthing.domainrental.in/api/upload";
+const UPLOAD_API_TOKEN = "95c04925d42febc574853d490cd6d35fcb267c39f1eecb0b692f4e3cea8c35f9";
+
+interface Plan {
+  key: string;
+  name: string;
+  duration: number;
+  price: number;
+}
 
 interface FormData {
   // Required
@@ -25,6 +34,7 @@ interface FormData {
   motherName: string;
   fatherMobile: string;
   motherMobile: string;
+  selectedPlan: string;
 }
 
 interface FormErrors {
@@ -46,6 +56,7 @@ const initialForm: FormData = {
   motherName: "",
   fatherMobile: "",
   motherMobile: "",
+  selectedPlan: "",
 };
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
@@ -146,6 +157,26 @@ export default function RegisterPage() {
   const [apiError, setApiError] = useState("");
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [plansLoading, setPlansLoading] = useState(true);
+
+  // Fetch subscription plans on mount
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const res = await fetch(`${API_URL}/public/register/${REGISTRATION_SLUG}`);
+        if (res.ok) {
+          const data = await res.json();
+          setPlans(data.plans || []);
+        }
+      } catch {
+        // Plans fetch failed silently — selection will just not appear
+      } finally {
+        setPlansLoading(false);
+      }
+    };
+    fetchPlans();
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -207,6 +238,27 @@ export default function RegisterPage() {
     setApiError("");
 
     try {
+      // Upload child photo if present
+      let childPhotoUrl: string | undefined;
+      if (form.childPhoto) {
+        const uploadForm = new window.FormData();
+        uploadForm.append("file", form.childPhoto);
+        const uploadRes = await fetch(UPLOAD_API_URL, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${UPLOAD_API_TOKEN}`,
+            "X-Project-Name": "rulers-basketball-academy",
+          },
+          body: uploadForm,
+        });
+        if (uploadRes.ok) {
+          const uploadData = await uploadRes.json();
+          childPhotoUrl = uploadData.file?.publicUrl;
+        } else {
+          console.error("Photo upload failed:", uploadRes.status);
+        }
+      }
+
       const payload = {
         name: form.parentName.trim(),
         phone: form.phone.replace(/\D/g, ""),
@@ -218,10 +270,12 @@ export default function RegisterPage() {
         childGender: form.childGender || undefined,
         childGrade: form.childGrade.trim() || undefined,
         childBloodGroup: form.childBloodGroup || undefined,
+        childPhoto: childPhotoUrl,
         fatherName: form.fatherName.trim() || undefined,
         motherName: form.motherName.trim() || undefined,
         fatherMobile: form.fatherMobile.replace(/\D/g, "") || undefined,
         motherMobile: form.motherMobile.replace(/\D/g, "") || undefined,
+        preferredBatch: form.selectedPlan || undefined,
       };
 
       const response = await fetch(
@@ -669,6 +723,67 @@ export default function RegisterPage() {
           {/* Divider */}
           <hr className="border-gray-200 mb-10" />
 
+          {/* Section: Select Plan */}
+          {!plansLoading && plans.length > 0 && (
+            <div className="mb-10">
+              <h2 className="font-[family-name:var(--font-oswald)] text-[1.3rem] text-secondary mb-1 flex items-center gap-2">
+                <i className="fas fa-basketball-ball text-primary" />
+                Select Plan
+              </h2>
+              <p className="text-gray-400 text-sm mb-6">
+                Choose your preferred subscription plan
+              </p>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {plans.map((plan) => (
+                  <button
+                    key={plan.key}
+                    type="button"
+                    onClick={() =>
+                      setForm((prev) => ({
+                        ...prev,
+                        selectedPlan: prev.selectedPlan === plan.key ? "" : plan.key,
+                      }))
+                    }
+                    className={`relative p-5 rounded-xl border-2 text-left transition-all duration-300 cursor-pointer group ${
+                      form.selectedPlan === plan.key
+                        ? "border-primary bg-primary/5 shadow-[0_0_0_4px_rgba(249,115,22,0.1)]"
+                        : "border-gray-200 bg-gray-50 hover:border-primary/40 hover:bg-primary/[0.02]"
+                    }`}
+                  >
+                    {form.selectedPlan === plan.key && (
+                      <div className="absolute top-3 right-3 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                        <i className="fas fa-check text-white text-xs" />
+                      </div>
+                    )}
+                    <p
+                      className={`font-[family-name:var(--font-oswald)] text-[1.1rem] tracking-[0.5px] mb-1 ${
+                        form.selectedPlan === plan.key ? "text-primary" : "text-secondary"
+                      }`}
+                    >
+                      {plan.name}
+                    </p>
+                    <p className="text-gray-400 text-sm mb-3">
+                      {plan.duration} {plan.duration === 1 ? "month" : "months"}
+                    </p>
+                    <p
+                      className={`font-[family-name:var(--font-bebas-neue)] text-[1.6rem] tracking-[1px] ${
+                        form.selectedPlan === plan.key ? "text-primary" : "text-secondary"
+                      }`}
+                    >
+                      &#8377;{plan.price.toLocaleString("en-IN")}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Divider */}
+          {!plansLoading && plans.length > 0 && (
+            <hr className="border-gray-200 mb-10" />
+          )}
+
           {/* Section: Payment QR Code */}
           <PaymentSection />
 
@@ -688,7 +803,7 @@ export default function RegisterPage() {
           >
             {loading ? (
               <>
-                <i className="fas fa-spinner fa-spin" /> Submitting...
+                <i className="fas fa-spinner fa-spin" /> Submitting... This may take a few seconds
               </>
             ) : (
               <>
