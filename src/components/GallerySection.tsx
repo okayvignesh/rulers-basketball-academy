@@ -56,12 +56,6 @@ const galleryImages = [
     caption: "Our Academy Family",
     large: true,
   },
-  {
-    src: "/images/Gemini_Generated_Image_qdlmcgqdlmcgqdlm.png",
-    alt: "Rulers Basketball Academy team on court",
-    caption: "Court Sessions",
-    large: true,
-  },
 ];
 
 export default function GallerySection() {

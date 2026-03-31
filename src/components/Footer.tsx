@@ -1,8 +1,5 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
-import { useLogo } from "@/context/LogoContext";
 
 const quickLinks = [
   { label: "Home", href: "#home" },
@@ -19,8 +16,6 @@ const programLinks = [
 ];
 
 export default function Footer() {
-  const { logo, logoSrc } = useLogo();
-
   return (
     <footer className="bg-dark text-white/70 pt-20">
       <div className="max-w-7xl mx-auto px-5">
@@ -32,11 +27,11 @@ export default function Footer() {
               className="flex items-center gap-2 font-[family-name:var(--font-bebas-neue)] text-[1.1rem] sm:text-[1.3rem] text-white tracking-[1.5px] mb-4"
             >
               <Image
-                src={logoSrc}
+                src="/images/Asset 1.png"
                 alt="Rulers Basketball Academy Logo"
-                width={logo === "alternate" ? 54 : 44}
-                height={logo === "alternate" ? 54 : 44}
-                className={logo === "alternate" ? "" : "rounded-full"}
+                width={44}
+                height={44}
+                className="rounded-full"
               />
               <span>
                 RULERS <span className="text-primary">BASKETBALL</span> ACADEMY

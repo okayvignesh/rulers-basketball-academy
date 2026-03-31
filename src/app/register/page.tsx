@@ -120,11 +120,11 @@ function PaymentSection() {
         <div className="flex flex-col items-center gap-4 p-8 bg-gray-50 rounded-xl border border-gray-200 animate-fade-in">
           <div className="bg-white p-4 rounded-xl shadow-md">
             <Image
-              src="/images/payment-qr.svg"
+              src="/images/qr-code.jpeg"
               alt="Payment QR Code"
-              width={200}
-              height={200}
-              className="w-[200px] h-[200px]"
+              width={250}
+              height={400}
+              className="w-auto h-auto max-w-[250px]"
             />
           </div>
           <div className="text-center">

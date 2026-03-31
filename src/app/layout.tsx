@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Bebas_Neue, Oswald } from "next/font/google";
-import { LogoProvider } from "@/context/LogoContext";
 import "./globals.css";
 
 const inter = Inter({
@@ -127,7 +126,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${bebasNeue.variable} ${oswald.variable} antialiased bg-white text-gray-800`}
       >
-        <LogoProvider>{children}</LogoProvider>
+        {children}
       </body>
     </html>
   );

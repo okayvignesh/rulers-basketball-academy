@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useLogo } from "@/context/LogoContext";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -18,7 +17,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const { logo, toggleLogo, logoSrc } = useLogo();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,11 +65,11 @@ export default function Navbar() {
           className="flex items-center gap-2 font-[family-name:var(--font-bebas-neue)] text-[1.1rem] sm:text-[1.3rem] text-white tracking-[1.5px]"
         >
           <Image
-            src={logoSrc}
+            src="/images/Asset 1.png"
             alt="Rulers Basketball Academy Logo"
-            width={logo === "alternate" ? 54 : 44}
-            height={logo === "alternate" ? 54 : 44}
-            className={logo === "alternate" ? "" : "rounded-full"}
+            width={44}
+            height={44}
+            className="rounded-full"
           />
           <span>
             RULERS <span className="text-primary">BASKETBALL</span> ACADEMY
@@ -97,27 +95,6 @@ export default function Navbar() {
         </ul>
 
         <div className="hidden lg:flex items-center gap-4">
-          {/* Logo Toggle */}
-          <button
-            onClick={toggleLogo}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 cursor-pointer"
-            aria-label="Switch logo version"
-          >
-            <span className={`text-[0.7rem] font-[family-name:var(--font-oswald)] tracking-[1px] uppercase ${logo === "original" ? "text-primary" : "text-white/40"}`}>
-              Logo 1
-            </span>
-            <div className="relative w-9 h-5 rounded-full bg-white/15">
-              <div
-                className={`absolute top-0.5 w-4 h-4 rounded-full bg-primary shadow transition-all duration-300 ${
-                  logo === "alternate" ? "left-[18px]" : "left-0.5"
-                }`}
-              />
-            </div>
-            <span className={`text-[0.7rem] font-[family-name:var(--font-oswald)] tracking-[1px] uppercase ${logo === "alternate" ? "text-primary" : "text-white/40"}`}>
-              Logo 2
-            </span>
-          </button>
-
           {/* CTA Button */}
           <Link
             href="/register"
@@ -171,27 +148,6 @@ export default function Navbar() {
             {item.label}
           </Link>
         ))}
-        {/* Mobile Logo Toggle */}
-        <button
-          onClick={toggleLogo}
-          className="mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-white/20 bg-white/5 cursor-pointer"
-          aria-label="Switch logo version"
-        >
-          <span className={`text-[0.8rem] font-[family-name:var(--font-oswald)] tracking-[1px] uppercase ${logo === "original" ? "text-primary" : "text-white/40"}`}>
-            Logo 1
-          </span>
-          <div className="relative w-9 h-5 rounded-full bg-white/15">
-            <div
-              className={`absolute top-0.5 w-4 h-4 rounded-full bg-primary shadow transition-all duration-300 ${
-                logo === "alternate" ? "left-[18px]" : "left-0.5"
-              }`}
-            />
-          </div>
-          <span className={`text-[0.8rem] font-[family-name:var(--font-oswald)] tracking-[1px] uppercase ${logo === "alternate" ? "text-primary" : "text-white/40"}`}>
-            Logo 2
-          </span>
-        </button>
-
         <Link
           href="/register"
           onClick={closeMobile}
