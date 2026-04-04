@@ -29,6 +29,7 @@ interface FormData {
   childGender: string;
   childGrade: string;
   childBloodGroup: string;
+  medicalConditions: string;
   address: string;
   fatherName: string;
   motherName: string;
@@ -51,6 +52,7 @@ const initialForm: FormData = {
   childGender: "",
   childGrade: "",
   childBloodGroup: "",
+  medicalConditions: "",
   address: "",
   fatherName: "",
   motherName: "",
@@ -270,6 +272,7 @@ export default function RegisterPage() {
         childGender: form.childGender || undefined,
         childGrade: form.childGrade.trim() || undefined,
         childBloodGroup: form.childBloodGroup || undefined,
+        medicalConditions: form.medicalConditions.trim() || undefined,
         childPhoto: childPhotoUrl,
         fatherName: form.fatherName.trim() || undefined,
         motherName: form.motherName.trim() || undefined,
@@ -389,6 +392,9 @@ export default function RegisterPage() {
                 <span className="block text-[0.8rem] text-red-500 mt-1 min-h-[20px]">
                   {errors.childName}
                 </span>
+                <p className="text-gray-400 text-xs mt-0.5">
+                  Please enter the full name as per Aadhaar
+                </p>
               </div>
 
               {/* Child DOB */}
@@ -474,6 +480,27 @@ export default function RegisterPage() {
                 </select>
                 <span className="block text-[0.8rem] text-red-500 mt-1 min-h-[20px]">
                   {errors.childBloodGroup}
+                </span>
+              </div>
+
+              {/* Medical Conditions */}
+              <div className="mb-1 md:col-span-2">
+                <label className="flex items-center gap-1.5 font-[family-name:var(--font-oswald)] text-[0.9rem] font-medium text-gray-600 mb-2 tracking-[0.5px]">
+                  <i className="fas fa-heartbeat text-primary text-[0.85rem]" />
+                  Medical Conditions / Allergies
+                </label>
+                <textarea
+                  name="medicalConditions"
+                  value={form.medicalConditions}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="e.g., Asthma, Peanut allergy, None"
+                  rows={2}
+                  maxLength={500}
+                  className={inputClass("medicalConditions")}
+                />
+                <span className="block text-[0.8rem] text-red-500 mt-1 min-h-[20px]">
+                  {errors.medicalConditions}
                 </span>
               </div>
 
