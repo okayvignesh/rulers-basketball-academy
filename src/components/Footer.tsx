@@ -7,6 +7,7 @@ const quickLinks = [
   { label: "Programs", href: "#programs" },
   { label: "Gallery", href: "#gallery" },
   { label: "Registration", href: "#registration" },
+  { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -37,9 +38,13 @@ export default function Footer() {
                 RULERS <span className="text-primary">BASKETBALL</span> ACADEMY
               </span>
             </Link>
-            <p className="text-[0.9rem] leading-relaxed mb-5">
-              Professional basketball training academy. Building
+            <p className="text-[0.9rem] leading-relaxed mb-2">
+              Professional basketball training academy in Hyderabad. Building
               champions on and off the court since 2025.
+            </p>
+            <p className="text-[0.85rem] text-white/45 mb-5 flex items-start gap-2">
+              <i className="fas fa-map-marker-alt text-primary mt-[3px]" />
+              <span>Hyderabad, Telangana, India</span>
             </p>
           </div>
 

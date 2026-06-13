@@ -118,18 +118,30 @@ export default function HeroSection() {
         {/* Badge */}
         <div className="animate-fade-in-down inline-flex items-center gap-2 px-6 py-2 bg-primary/15 border border-primary/30 rounded-full text-primary-light font-[family-name:var(--font-oswald)] text-[0.85rem] tracking-[2px] uppercase mb-6">
           <i className="fas fa-trophy" />
-          Professional Basketball Academy
+          Professional Basketball Academy in Hyderabad
         </div>
 
         {/* Title */}
         <h1 className="font-[family-name:var(--font-bebas-neue)] text-white leading-none mb-4">
-          <span className="block text-[clamp(3rem,10vw,6.5rem)] tracking-[6px] animate-fade-in-up delay-100">
+          <span className="sr-only">
+            Rulers Basketball Academy — Professional Basketball Coaching in Hyderabad
+          </span>
+          <span
+            aria-hidden="true"
+            className="block text-[clamp(3rem,10vw,6.5rem)] tracking-[6px] animate-fade-in-up delay-100"
+          >
             RULERS
           </span>
-          <span className="block text-[clamp(3.5rem,12vw,8rem)] tracking-[6px] text-primary animate-fade-in-up delay-300 drop-shadow-[0_0_60px_rgba(249,115,22,0.3)]">
+          <span
+            aria-hidden="true"
+            className="block text-[clamp(3.5rem,12vw,8rem)] tracking-[6px] text-primary animate-fade-in-up delay-300 drop-shadow-[0_0_60px_rgba(249,115,22,0.3)]"
+          >
             BASKETBALL
           </span>
-          <span className="block text-[clamp(3rem,10vw,6.5rem)] tracking-[6px] animate-fade-in-up delay-500">
+          <span
+            aria-hidden="true"
+            className="block text-[clamp(3rem,10vw,6.5rem)] tracking-[6px] animate-fade-in-up delay-500"
+          >
             ACADEMY
           </span>
         </h1>
@@ -141,8 +153,9 @@ export default function HeroSection() {
 
         {/* Description */}
         <p className="text-[1.05rem] text-white/55 max-w-[560px] mx-auto mb-9 animate-fade-in-up delay-900">
-          Professional basketball training for all ages and skill levels.
-          Build your skills, strength, and game IQ with expert coaching.
+          Professional basketball training in Hyderabad for all ages and skill
+          levels. Build your skills, strength, and game IQ with expert coaching
+          across Madhapur, Gachibowli, Kondapur and nearby areas.
         </p>
 
         {/* CTA Buttons */}

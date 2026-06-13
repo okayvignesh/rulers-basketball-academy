@@ -23,6 +23,8 @@ const oswald = Oswald({
 
 const SITE_URL = "https://rulersbasketballacademy.com";
 const SITE_NAME = "Rulers Basketball Academy";
+const SITE_DESCRIPTION =
+  "Top basketball academy in Hyderabad. Expert coaching for kids, teens & adults across Madhapur, Gachibowli, Kondapur, Kukatpally, Hitech City & nearby areas. Enroll today!";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -33,24 +35,38 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Rulers Basketball Academy | Professional Basketball Training in Hyderabad",
-    template: "%s | Rulers Basketball Academy",
+    default:
+      "Rulers Basketball Academy | Best Basketball Coaching in Hyderabad",
+    template: "%s | Rulers Basketball Academy Hyderabad",
   },
-  description:
-    "Rulers Basketball Academy offers professional basketball training in Hyderabad for all ages. Expert coaching, structured programs for beginners to advanced players. Join now!",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
   keywords: [
     "basketball academy Hyderabad",
     "basketball coaching Hyderabad",
-    "youth basketball training",
-    "kids basketball academy",
-    "sports academy Hyderabad",
-    "basketball classes near me",
-    "Rulers Basketball Academy",
-    "basketball camp Hyderabad",
-    "professional basketball training",
+    "basketball classes Hyderabad",
+    "basketball training Hyderabad",
+    "best basketball academy in Hyderabad",
+    "basketball academy near me",
+    "basketball academy Madhapur",
+    "basketball academy Gachibowli",
+    "basketball academy Kondapur",
+    "basketball academy Kukatpally",
+    "basketball academy Hitech City",
+    "basketball academy Jubilee Hills",
+    "basketball academy Banjara Hills",
+    "basketball academy Secunderabad",
+    "basketball academy Miyapur",
+    "basketball academy Nizampet",
+    "basketball academy Manikonda",
+    "basketball academy Begumpet",
+    "basketball coaching for kids Hyderabad",
+    "youth basketball academy Hyderabad",
+    "basketball classes for beginners Hyderabad",
+    "kids basketball training Hyderabad",
+    "summer basketball camp Hyderabad",
     "basketball academy Telangana",
-    "weekend basketball camp",
-    "basketball for kids Hyderabad",
+    "Rulers Basketball Academy",
   ],
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
@@ -60,6 +76,7 @@ export const metadata: Metadata = {
     email: true,
     address: true,
   },
+  manifest: "/manifest.webmanifest",
   icons: {
     icon: [
       { url: "/images/Asset 1.svg", type: "image/svg+xml" },
@@ -68,9 +85,9 @@ export const metadata: Metadata = {
     apple: "/images/Asset 1.png",
   },
   openGraph: {
-    title: "Rulers Basketball Academy | Train Like a Champion",
-    description:
-      "Professional basketball training for all ages in Hyderabad. Expert coaches, structured programs. Enroll today!",
+    title:
+      "Rulers Basketball Academy | Best Basketball Coaching in Hyderabad",
+    description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
     type: "website",
@@ -80,15 +97,15 @@ export const metadata: Metadata = {
         url: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1200&h=630&fit=crop",
         width: 1200,
         height: 630,
-        alt: "Rulers Basketball Academy - Professional Basketball Training",
+        alt: "Rulers Basketball Academy — Professional Basketball Training in Hyderabad",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rulers Basketball Academy | Train Like a Champion",
-    description:
-      "Professional basketball training for all ages in Hyderabad. Expert coaching, structured programs. Join now!",
+    title:
+      "Rulers Basketball Academy | Best Basketball Coaching in Hyderabad",
+    description: SITE_DESCRIPTION,
     images: [
       "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1200&h=630&fit=crop",
     ],
@@ -108,6 +125,12 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   category: "sports",
+  other: {
+    "geo.region": "IN-TG",
+    "geo.placename": "Hyderabad",
+    "geo.position": "17.385044;78.486671",
+    ICBM: "17.385044, 78.486671",
+  },
 };
 
 export default function RootLayout({
@@ -116,8 +139,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth" dir="ltr">
+    <html lang="en-IN" className="scroll-smooth" dir="ltr">
       <head>
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="" />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"

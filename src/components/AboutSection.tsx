@@ -34,7 +34,7 @@ const features = [
   {
     icon: "fas fa-eye",
     title: "Our Vision",
-    desc: "To be the premier basketball academy in Telangana, producing athletes who compete at national and international levels.",
+    desc: "To be the premier basketball academy in Hyderabad and Telangana, producing athletes who compete at national and international levels.",
   },
   {
     icon: "fas fa-star",
@@ -89,9 +89,11 @@ export default function AboutSection() {
             </h3>
             <p className="text-gray-500 mb-4 text-[0.95rem]">
               Founded in December 2025, Rulers Basketball Academy is
-              dedicated to nurturing basketball talent. We give training in
-              well established communities, providing expert coaching for
-              aspiring basketball players of all ages and skill levels.
+              dedicated to nurturing basketball talent across Hyderabad. We
+              provide expert coaching in well-established communities including
+              Madhapur, Gachibowli, Kondapur, Kukatpally, Hitech City and nearby
+              areas — open to aspiring basketball players of all ages and skill
+              levels.
             </p>
             <p className="text-gray-500 mb-8 text-[0.95rem]">
               Our academy is committed to developing well-rounded athletes who
