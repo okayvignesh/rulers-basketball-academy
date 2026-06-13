@@ -5,13 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 
 const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Programs", href: "#programs" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Registration", href: "#registration" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/#home" },
+  { label: "About", href: "/#about" },
+  { label: "Programs", href: "/#programs" },
+  { label: "Gallery", href: "/#gallery" },
+  { label: "Blog", href: "/blog" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Navbar() {
@@ -62,7 +62,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-5 flex items-center justify-between">
         {/* Logo */}
         <Link
-          href="#home"
+          href="/#home"
           className="flex items-center gap-2 font-[family-name:var(--font-bebas-neue)] text-[1.1rem] sm:text-[1.3rem] text-white tracking-[1.5px]"
         >
           <Image
@@ -84,7 +84,7 @@ export default function Navbar() {
               <Link
                 href={item.href}
                 className={`px-4 py-2 font-[family-name:var(--font-oswald)] text-[0.9rem] font-normal tracking-[1px] uppercase rounded-lg transition-all duration-300 ${
-                  activeSection === item.href.slice(1)
+                  activeSection === item.href.replace(/^\/#/, "")
                     ? "text-primary bg-primary/15"
                     : "text-white/80 hover:text-white hover:bg-primary/15"
                 }`}
@@ -141,7 +141,7 @@ export default function Navbar() {
             href={item.href}
             onClick={closeMobile}
             className={`w-full px-4 py-3 font-[family-name:var(--font-oswald)] text-[0.9rem] tracking-[1px] uppercase rounded-lg transition-all duration-300 ${
-              activeSection === item.href.slice(1)
+              activeSection === item.href.replace(/^\/#/, "")
                 ? "text-primary bg-primary/15"
                 : "text-white/80 hover:text-white hover:bg-primary/15"
             }`}

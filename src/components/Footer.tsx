@@ -2,13 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 
 const quickLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About Us", href: "#about" },
-  { label: "Programs", href: "#programs" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Registration", href: "#registration" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/#home" },
+  { label: "About Us", href: "/#about" },
+  { label: "Programs", href: "/#programs" },
+  { label: "Gallery", href: "/#gallery" },
+  { label: "Blog", href: "/blog" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 const programLinks = [
@@ -24,7 +24,7 @@ export default function Footer() {
           {/* About */}
           <div>
             <Link
-              href="#home"
+              href="/#home"
               className="flex items-center gap-2 font-[family-name:var(--font-bebas-neue)] text-[1.1rem] sm:text-[1.3rem] text-white tracking-[1.5px] mb-4"
             >
               <Image
@@ -77,7 +77,7 @@ export default function Footer() {
               {programLinks.map((label) => (
                 <li key={label}>
                   <Link
-                    href="#programs"
+                    href="/#programs"
                     className="flex items-center gap-2 text-[0.9rem] text-white/55 transition-all duration-300 hover:text-primary hover:pl-1"
                   >
                     <i className="fas fa-chevron-right text-[0.7rem] text-primary opacity-50" />
