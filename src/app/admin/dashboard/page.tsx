@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { isAuthenticated } from "@/lib/auth";
-import { readManifest } from "@/lib/gallery-storage";
+import { readManifest, type GalleryItem } from "@/lib/gallery-storage";
 import DashboardClient from "./DashboardClient";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +12,17 @@ export const metadata = {
 
 export default async function AdminDashboardPage() {
   if (!(await isAuthenticated())) redirect("/admin");
-  const items = await readManifest();
-  return <DashboardClient initialItems={items} />;
+
+  let items: GalleryItem[] = [];
+  let loadError: string | null = null;
+  try {
+    items = await readManifest();
+  } catch (err) {
+    loadError =
+      err instanceof Error
+        ? err.message
+        : "Could not load gallery items from the upload service.";
+  }
+
+  return <DashboardClient initialItems={items} loadError={loadError} />;
 }

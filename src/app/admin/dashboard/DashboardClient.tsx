@@ -4,9 +4,12 @@ import { FormEvent, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { GalleryItem } from "@/lib/gallery-storage";
 
-type Props = { initialItems: GalleryItem[] };
+type Props = {
+  initialItems: GalleryItem[];
+  loadError?: string | null;
+};
 
-export default function DashboardClient({ initialItems }: Props) {
+export default function DashboardClient({ initialItems, loadError }: Props) {
   const router = useRouter();
   const [items, setItems] = useState<GalleryItem[]>(initialItems);
   const [caption, setCaption] = useState("");
@@ -92,6 +95,17 @@ export default function DashboardClient({ initialItems }: Props) {
           </button>
         </div>
       </header>
+
+      {loadError && (
+        <div className="max-w-6xl mx-auto px-5 mt-6">
+          <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+            <strong className="font-medium">
+              Couldn&apos;t load gallery items:
+            </strong>{" "}
+            {loadError}
+          </div>
+        </div>
+      )}
 
       <div className="max-w-6xl mx-auto px-5 py-10 grid gap-10 lg:grid-cols-[400px_1fr]">
         {/* Upload form */}
