@@ -292,7 +292,7 @@ export default function RegisterPage() {
         fatherMobile: form.fatherMobile.replace(/\D/g, "") || undefined,
         motherMobile: form.motherMobile.replace(/\D/g, "") || undefined,
         preferredBatch: form.selectedPlan || undefined,
-        customFields: { address_proof: addressProofUrl },
+        customFields: { address_proof_aadhaar: addressProofUrl },
       };
 
       const response = await fetch(
