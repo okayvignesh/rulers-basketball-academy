@@ -22,6 +22,7 @@ interface FormData {
   phone: string;
   childName: string;
   childPhoto: File | null;
+  addressProof: File | null;
 
   // Optional
   email: string;
@@ -47,6 +48,7 @@ const initialForm: FormData = {
   phone: "",
   childName: "",
   childPhoto: null,
+  addressProof: null,
   email: "",
   childDOB: "",
   childGender: "",
@@ -78,6 +80,9 @@ function validate(data: FormData): FormErrors {
   if (!data.childName.trim()) errors.childName = "Child's name is required";
   else if (data.childName.trim().length < 2)
     errors.childName = "Name must be at least 2 characters";
+
+  if (!data.childPhoto) errors.childPhoto = "Child's photo is required";
+  if (!data.addressProof) errors.addressProof = "Address proof is required";
 
   // Optional field validations
   if (data.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
@@ -158,7 +163,9 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [addressProofPreview, setAddressProofPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const addressProofInputRef = useRef<HTMLInputElement>(null);
   const [plans, setPlans] = useState<Plan[]>([]);
   const [plansLoading, setPlansLoading] = useState(true);
 
@@ -194,27 +201,48 @@ export default function RegisterPage() {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    if (file) {
-      if (!file.type.startsWith("image/")) {
+  const handleFileChange =
+    (field: "childPhoto" | "addressProof") =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0] || null;
+      if (!file) return;
+      const allowPdf = field === "addressProof";
+      const isImage = file.type.startsWith("image/");
+      const isPdf = file.type === "application/pdf";
+      if (!isImage && !(allowPdf && isPdf)) {
         setErrors((prev) => ({
           ...prev,
-          childPhoto: "Please upload an image file",
+          [field]: allowPdf ? "Please upload an image or PDF" : "Please upload an image file",
         }));
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
-        setErrors((prev) => ({
-          ...prev,
-          childPhoto: "Photo must be less than 5MB",
-        }));
+        setErrors((prev) => ({ ...prev, [field]: "File must be less than 5MB" }));
         return;
       }
-      setForm((prev) => ({ ...prev, childPhoto: file }));
-      setPhotoPreview(URL.createObjectURL(file));
-      setErrors((prev) => ({ ...prev, childPhoto: "" }));
-    }
+      setForm((prev) => ({ ...prev, [field]: file }));
+      const preview = isImage ? URL.createObjectURL(file) : null;
+      if (field === "childPhoto") setPhotoPreview(preview);
+      else setAddressProofPreview(preview);
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    };
+
+  const uploadFile = async (file: File): Promise<string> => {
+    const uploadForm = new window.FormData();
+    uploadForm.append("file", file);
+    const res = await fetch(UPLOAD_API_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${UPLOAD_API_TOKEN}`,
+        "X-Project-Name": "rulers-basketball-academy",
+      },
+      body: uploadForm,
+    });
+    if (!res.ok) throw new Error("File upload failed. Please try again.");
+    const data = await res.json();
+    const url = data.file?.publicUrl;
+    if (!url) throw new Error("File upload failed. Please try again.");
+    return url;
   };
 
   const handleBlur = (
@@ -240,26 +268,11 @@ export default function RegisterPage() {
     setApiError("");
 
     try {
-      // Upload child photo if present
-      let childPhotoUrl: string | undefined;
-      if (form.childPhoto) {
-        const uploadForm = new window.FormData();
-        uploadForm.append("file", form.childPhoto);
-        const uploadRes = await fetch(UPLOAD_API_URL, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${UPLOAD_API_TOKEN}`,
-            "X-Project-Name": "rulers-basketball-academy",
-          },
-          body: uploadForm,
-        });
-        if (uploadRes.ok) {
-          const uploadData = await uploadRes.json();
-          childPhotoUrl = uploadData.file?.publicUrl;
-        } else {
-          console.error("Photo upload failed:", uploadRes.status);
-        }
-      }
+      // Both files are required by validate() above — non-null here.
+      const [childPhotoUrl, addressProofUrl] = await Promise.all([
+        uploadFile(form.childPhoto!),
+        uploadFile(form.addressProof!),
+      ]);
 
       const payload = {
         name: form.parentName.trim(),
@@ -279,6 +292,7 @@ export default function RegisterPage() {
         fatherMobile: form.fatherMobile.replace(/\D/g, "") || undefined,
         motherMobile: form.motherMobile.replace(/\D/g, "") || undefined,
         preferredBatch: form.selectedPlan || undefined,
+        customFields: { address_proof: addressProofUrl },
       };
 
       const response = await fetch(
@@ -508,7 +522,7 @@ export default function RegisterPage() {
               <div className="mb-1">
                 <label className="flex items-center gap-1.5 font-[family-name:var(--font-oswald)] text-[0.9rem] font-medium text-gray-600 mb-2 tracking-[0.5px]">
                   <i className="fas fa-camera text-primary text-[0.85rem]" />
-                  Child&apos;s Photo
+                  Child&apos;s Photo <span className="text-red-500">*</span>
                 </label>
                 <div
                   onClick={() => fileInputRef.current?.click()}
@@ -544,11 +558,59 @@ export default function RegisterPage() {
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  onChange={handleFileChange}
+                  onChange={handleFileChange("childPhoto")}
                   className="hidden"
                 />
                 <span className="block text-[0.8rem] text-red-500 mt-1 min-h-[20px]">
                   {errors.childPhoto}
+                </span>
+              </div>
+
+              {/* Address Proof */}
+              <div className="mb-1">
+                <label className="flex items-center gap-1.5 font-[family-name:var(--font-oswald)] text-[0.9rem] font-medium text-gray-600 mb-2 tracking-[0.5px]">
+                  <i className="fas fa-id-card text-primary text-[0.85rem]" />
+                  Address Proof (Aadhaar) <span className="text-red-500">*</span>
+                </label>
+                <div
+                  onClick={() => addressProofInputRef.current?.click()}
+                  className={`w-full px-4 py-3 bg-gray-100 border-2 border-dashed rounded-lg cursor-pointer transition-all duration-300 hover:border-primary hover:bg-primary/5 flex items-center gap-4 ${
+                    errors.addressProof ? "border-red-500" : "border-gray-300"
+                  }`}
+                >
+                  {addressProofPreview ? (
+                    <Image
+                      src={addressProofPreview}
+                      alt="Address proof preview"
+                      width={48}
+                      height={48}
+                      className="w-12 h-12 rounded-lg object-cover"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center text-gray-400">
+                      <i className={`fas ${form.addressProof ? "fa-file-pdf" : "fa-id-card"} text-xl`} />
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-sm text-gray-600 font-medium">
+                      {form.addressProof
+                        ? form.addressProof.name
+                        : "Click to upload Aadhaar / address proof"}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      JPG, PNG or PDF up to 5MB
+                    </p>
+                  </div>
+                </div>
+                <input
+                  ref={addressProofInputRef}
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={handleFileChange("addressProof")}
+                  className="hidden"
+                />
+                <span className="block text-[0.8rem] text-red-500 mt-1 min-h-[20px]">
+                  {errors.addressProof}
                 </span>
               </div>
             </div>
